@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { AuthContext } from "../../Provider/AuthProvider";
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -13,14 +14,30 @@ const Login = () => {
     reset,
     formState: { errors },
   } = useForm();
+  const { signIn, googleSignIn } = useContext(AuthContext);
 
   // google sign in
-  const handleGoogle = () => {};
+  const handleGoogle = () => {
+    googleSignIn()
+      .then((result) => {
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        toast(error.message);
+      });
+  };
 
   const handleLogin = (data) => {
     const { email, password } = data;
-    // setLoading(true);
-    
+    setLoading(true);
+    signIn(email, password)
+      .then((result) => {
+        setLoading(false);
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((error) => {
+        toast(error.message);
+      });
   };
   return (
     <>

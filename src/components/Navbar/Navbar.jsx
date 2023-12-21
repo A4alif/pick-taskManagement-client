@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Navbar = () => {
-  const user = true;
+  const { user, logOut } = useContext(AuthContext);
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        toast("Logged Out");
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <>
       <div className="container mx-auto px-6">
@@ -111,11 +119,43 @@ const Navbar = () => {
                 </NavLink>
               )}
             </ul>
-            <Link to={"/login"}>
-              <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2">
-                Log In
-              </button>
-            </Link>
+            {/* dropdown profile */}
+            {user?.email ? (
+              <>
+                <div className="dropdown dropdown-end">
+                  <label
+                    tabIndex={0}
+                    className="btn btn-ghost btn-circle avatar"
+                  >
+                    <div className="w-10 rounded-full">
+                      {user?.photoURL && <img src={user?.photoURL} alt="" />}
+                    </div>
+                  </label>
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 "
+                  >
+                    <li className="py-3">
+                      <a className="justify-between">{user?.displayName}</a>
+                    </li>
+                   
+                    <li className="pb-3 text-red-500 font-bold">
+                      <Link to={""} onClick={handleLogOut}>
+                        Logout
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <Link to={"/login"}>
+                  <button className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2">
+                    Log In
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
