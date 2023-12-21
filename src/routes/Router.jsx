@@ -6,6 +6,7 @@ import Register from "../pages/Register/Register";
 import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import DashboardLayout from "../layout/DashboardLayout";
 import Todos from "../pages/Dashboard/Todos/Todos";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -29,14 +30,18 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element:<DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
     children: [
-        {
-            path: "todos",
-            element: <Todos />
-        }
-    ]
-  }
+      {
+        path: "todos",
+        element: <Todos />,
+      },
+    ],
+  },
 ]);
 
 export default router;
