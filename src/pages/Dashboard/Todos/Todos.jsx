@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import useAllTasks from "../../../hooks/useAllTasks";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
@@ -7,8 +7,10 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import LoadingSpinner from "./../../../components/LoadingSpinner/LoadingSpinner";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Todos = () => {
+  const {user} = useContext(AuthContext);
   const [tasks, isLoading, refetch] = useAllTasks();
   const axiosPublic = useAxiosPublic();
 
@@ -46,11 +48,30 @@ const Todos = () => {
       title: task?.title,
       description: task?.description,
       dueDate: task?.dueDate,
-      status: task?.status,
-      taskMainId: task?._id
+      status: "ongoing",
+      taskMainId: task?._id,
+      email: user?.email
     }
 
-    console.log(cartInfo);
+    axiosPublic.post("/mytask-cart", cartInfo)
+    .then(res => {
+      if (res.data.result.insertedId) {
+        Swal.fire({
+          icon: "success",
+          title: "You Took The Task",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Something Went Wrong",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    })
   }
 
   return (
