@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from './../Provider/AuthProvider';
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const DashboardLayout = () => {
   const {user, logOut} = useContext(AuthContext);
@@ -14,6 +15,9 @@ const DashboardLayout = () => {
   };
   return (
     <>
+    <Helmet>
+      <title>Pick | Dashboard</title>
+    </Helmet>
       <div>
         <div className="flex">
           <div className="left min-h-screen w-[280px] bg-gray-50 border-r-2 shadow-lg">

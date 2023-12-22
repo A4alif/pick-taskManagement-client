@@ -1,6 +1,22 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const UpdateTodo = () => {
+  const { id } = useParams();
+  const axiosPublic = useAxiosPublic();
+  const navigate = useNavigate();
+  const { data: task = {}, refetch } = useQuery({
+    queryKey: ["singleTask"],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/single-task/${id}`);
+      return res.data.result;
+    },
+  });
+  const { title, description, priority, dueData } = task;
+
   const handleUpdate = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -9,12 +25,25 @@ const UpdateTodo = () => {
     const dueData = form.dueDate.value;
     const postTags = form.postTags.value;
     const updateTaskInfo = {
-        title,
-        description,
-        dueData,
-        postTags,
-    }
-    console.log(updateTaskInfo);
+      title,
+      description,
+      dueData,
+      postTags,
+    };
+
+    // update value to database
+    axiosPublic.put(`/update-task/${id}`, updateTaskInfo).then((res) => {
+      if (res.data.result.modifiedCount > 0) {
+        navigate("/dashboard/tasks");
+        refetch();
+        Swal.fire({
+          icon: "success",
+          title: "Task Updated successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
   return (
     <>
@@ -27,7 +56,7 @@ const UpdateTodo = () => {
           <div>
             <div className="mt-9">
               <div className="bg-gray-200 py-9 rounded-lg shadow-lg">
-                <form onSubmit={handleUpdate} >
+                <form onSubmit={handleUpdate}>
                   <div className=" w-3/4 mx-auto  lg:w-3/4 mb-8 ">
                     <label
                       className="block text-xl font-semibold mb-4"
@@ -36,6 +65,7 @@ const UpdateTodo = () => {
                       Post Title
                     </label>
                     <input
+                      defaultValue={title}
                       name="title"
                       id="title"
                       className="py-2 px-2 rounded-lg focus:outline-none w-full"
@@ -52,6 +82,7 @@ const UpdateTodo = () => {
                       Description
                     </label>
                     <textarea
+                      defaultValue={description}
                       name="description"
                       id="description"
                       cols="10"
@@ -69,6 +100,7 @@ const UpdateTodo = () => {
                       Due Date
                     </label>
                     <input
+                      defaultValue={dueData}
                       name="dueDate"
                       id="dueDate"
                       className="py-2 px-2 rounded-lg focus:outline-none w-full text-gray-400"
@@ -84,6 +116,7 @@ const UpdateTodo = () => {
                       Select Priority{" "}
                     </label>
                     <select
+                      defaultValue={priority}
                       className="w-40 py-2 rounded-md focus:outline-none"
                       name="postTags"
                       id="postTags"

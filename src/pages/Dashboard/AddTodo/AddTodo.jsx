@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosPublic from "../../../hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const AddTodo = () => {
+  const {user} = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
   const {
     register,
@@ -20,6 +22,11 @@ const AddTodo = () => {
       description,
       dueDate,
       priority,
+      authorEmail: user?.email,
+      authorName: user?.displayName,
+      authorImg: user?.photoURL,
+      takenBy: "none",
+      status: "pending"
     };
     axiosPublic.post("/add-task", newPostInfo).then((res) => {
       if (res.data.result.insertedId) {

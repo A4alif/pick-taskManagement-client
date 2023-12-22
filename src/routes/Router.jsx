@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         element: <AddTodo />,
       },
       {
-        path: "update-task",
+        path: "tasks/update-task/:id",
         element: <UpdateTodo />,
       },
     ],
