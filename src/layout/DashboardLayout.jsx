@@ -3,6 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from './../Provider/AuthProvider';
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
+import { CiHome } from "react-icons/ci";
 
 const DashboardLayout = () => {
   const {user, logOut} = useContext(AuthContext);
@@ -49,6 +50,37 @@ const DashboardLayout = () => {
                     }
                   >
                     Add Task
+                  </NavLink>
+                </li>
+                <li className="text-2xl font-medium">
+                  <NavLink
+                    to="/dashboard/my-task"
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? "pending"
+                        : isActive
+                        ? "text-purple-600 font-semibold "
+                        : ""
+                    }
+                  >
+                    My Task
+                  </NavLink>
+                </li>
+                <div className="divider divider-success pt-9">
+                  <CiHome size={60} />
+                </div>
+                <li className="text-2xl font-medium">
+                  <NavLink
+                    to="/"
+                    className={({ isActive, isPending }) =>
+                      isPending
+                        ? "pending"
+                        : isActive
+                        ? "text-purple-600 font-semibold "
+                        : ""
+                    }
+                  >
+                    Home
                   </NavLink>
                 </li>
               </ul>

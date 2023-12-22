@@ -9,6 +9,7 @@ import Todos from "../pages/Dashboard/Todos/Todos";
 import PrivateRoute from "./PrivateRoute";
 import AddTodo from "../pages/Dashboard/AddTodo/AddTodo";
 import UpdateTodo from "../pages/Dashboard/UpdateTodo/UpdateTodo";
+import MyTask from "../pages/Dashboard/MyTask/MyTask";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
         path: "tasks/update-task/:id",
         element: <UpdateTodo />,
       },
+      {
+        path:"my-task",
+        element: <MyTask />
+      }
     ],
   },
 ]);

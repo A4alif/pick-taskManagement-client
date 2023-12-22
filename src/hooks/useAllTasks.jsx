@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import useAxiosPublic from './useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
+import { AuthContext } from '../Provider/AuthProvider';
 
 const useAllTasks = () => {
     const axiosPublic = useAxiosPublic();
