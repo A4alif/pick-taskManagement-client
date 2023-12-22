@@ -7,6 +7,8 @@ import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import DashboardLayout from "../layout/DashboardLayout";
 import Todos from "../pages/Dashboard/Todos/Todos";
 import PrivateRoute from "./PrivateRoute";
+import AddTodo from "../pages/Dashboard/AddTodo/AddTodo";
+import UpdateTodo from "../pages/Dashboard/UpdateTodo/UpdateTodo";
 
 const router = createBrowserRouter([
   {
@@ -37,8 +39,16 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        path: "todos",
+        path: "tasks",
         element: <Todos />,
+      },
+      {
+        path: "add-task",
+        element: <AddTodo />,
+      },
+      {
+        path: "update-task",
+        element: <UpdateTodo />,
       },
     ],
   },

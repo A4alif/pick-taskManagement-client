@@ -106,7 +106,7 @@ const Navbar = () => {
               </NavLink>
               {user && (
                 <NavLink
-                  to="/dashboard/todos"
+                  to="/dashboard/tasks"
                   className={({ isActive, isPending }) =>
                     isPending
                       ? "pending"
@@ -138,7 +138,7 @@ const Navbar = () => {
                     <li className="py-3">
                       <a className="justify-between">{user?.displayName}</a>
                     </li>
-                   
+
                     <li className="pb-3 text-red-500 font-bold">
                       <Link to={""} onClick={handleLogOut}>
                         Logout
